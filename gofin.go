@@ -6,13 +6,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func main() {
-	router := gin.Default()
-	router.GET("/", getMain)
+var dirTemplates = "template"
 
-	router.Run("localhost:8080")
+func mainPage(c *gin.Context) {
+	c.HTML(http.StatusOK, "main.html", gin.H{
+		"title": "Main website",
+		"body":  "Текст",
+	})
 }
 
-func getMain(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, []string{"test", "test2"})
+func main() {
+	router := gin.Default()
+	router.LoadHTMLGlob(dirTemplates + "/*.html")
+	router.GET("/", mainPage)
+	router.Run("localhost:8080")
 }
