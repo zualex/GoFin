@@ -17,6 +17,8 @@ func mainPage(c *gin.Context) {
 
 func main() {
 	router := gin.Default()
+	router.Static("/dist", "../frontend/dist")
+	router.Static("/plugins", "../frontend/plugins")
 	router.LoadHTMLGlob(dirTemplates + "/*.html")
 	router.GET("/", mainPage)
 	// router.Run("localhost:8080")

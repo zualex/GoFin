@@ -1,5 +1,7 @@
 # Start from golang base image
-FROM golang:alpine
+FROM golang:alpine as base
+
+FROM base as dev
 
 # Install git.
 # Git is required for fetching the dependencies.
@@ -13,17 +15,21 @@ WORKDIR /app
 COPY . .
 # COPY .env .
 
-# Download all the dependencies
-RUN go get -d -v ./...
+RUN go install github.com/cosmtrek/air@latest
 
-# Install the package
-RUN go install -v ./...
+CMD ["air"]
 
-# Build the Go app
-RUN go build -o /build
+# # Download all the dependencies
+# RUN go get -d -v ./...
 
-# Expose port 8080 to the outside world
-EXPOSE 8080
+# # Install the package
+# RUN go install -v ./...
 
-# Run the executable
-CMD [ "/build" ]
+# # Build the Go app
+# RUN go build -o /build
+
+# # Expose port 8080 to the outside world
+# EXPOSE 8080
+
+# # Run the executable
+# CMD [ "/build" ]
