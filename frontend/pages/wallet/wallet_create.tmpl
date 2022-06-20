@@ -1,0 +1,35 @@
+{{ template "common/header.tmpl" .}}
+<div class="row">
+    <div class="col-12">
+        <p><a href="{{index .routes "wallets"}}" class="btn btn-default">Назад</a></p>
+
+        <div class="card card-primary">
+            <div class="card-header">
+            <h3 class="card-title">{{ .title }}</h3>
+            </div>
+            
+            <form action="{{index .routes "wallet.save"}}">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="name">Название</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Введите название">
+                    </div>
+                    <div class="form-group">
+                        <label for="currency">Валюта</label>
+                        <select class="form-control" id="currency" name="currency">
+                            {{ range .currencies }}
+                                <option value="{{ . }}">{{ . }}</option>
+                            {{ end }}
+                        </select>
+                    </div>
+                </div>
+            
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Создать</button>
+                </div>
+            </form>
+            </div>
+    
+    </div>
+    </div>
+{{ template "common/footer.tmpl" .}}
