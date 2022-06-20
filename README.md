@@ -10,11 +10,14 @@ docker compose build
 - https://stackoverflow.com/questions/46184173/err-empty-response-from-docker-container
 - https://betterprogramming.pub/how-does-docker-port-binding-work-b089f23ca4c8
 - https://firehydrant.com/blog/develop-a-go-app-with-docker-compose/
+- https://hoohoo.top/blog/20210530112304-golang-tutorial-introduction-gin-html-template-and-how-integration-with-bootstrap/
+- https://github.com/golang-standards/project-layout
 
 ## TODO
 <!-- - Docker -->
 <!-- - Postgresql -->
-- Найти шаблон на bootsrap
+<!-- - Найти шаблон на bootsrap -->
+- Скомоновать шаблоны так, чтобы в main.tmpl был только header, content и footer
 - Реализовать CRUD для категорий
 - Разобраться с правильной иерархией папок
 - Почитать документацию к "net/http" и посмотреть на аналоги

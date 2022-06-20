@@ -6,10 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var dirTemplates = "template"
-
 func mainPage(c *gin.Context) {
-	c.HTML(http.StatusOK, "main.html", gin.H{
+	c.HTML(http.StatusOK, "main.tmpl", gin.H{
 		"title": "Main website",
 		"body":  "Текст",
 	})
@@ -19,8 +17,9 @@ func main() {
 	router := gin.Default()
 	router.Static("/dist", "../frontend/dist")
 	router.Static("/plugins", "../frontend/plugins")
-	router.LoadHTMLGlob(dirTemplates + "/*.html")
+	router.LoadHTMLGlob("../frontend/pages/**/*.tmpl")
+
 	router.GET("/", mainPage)
-	// router.Run("localhost:8080")
-	router.Run("0.0.0.0:8080")
+
+	router.Run(":8080")
 }
