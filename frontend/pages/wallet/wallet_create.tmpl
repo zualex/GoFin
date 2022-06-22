@@ -8,11 +8,11 @@
             <h3 class="card-title">{{ .title }}</h3>
             </div>
             
-            <form action="{{index .routes "wallet.save"}}">
+            <form action="{{index .routes "wallet.save"}}" method="POST">
                 <div class="card-body">
                     <div class="form-group">
                         <label for="name">Название</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Введите название">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Введите название" required>
                     </div>
                     <div class="form-group">
                         <label for="currency">Валюта</label>

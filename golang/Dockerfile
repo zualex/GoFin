@@ -15,15 +15,15 @@ WORKDIR /app
 COPY . .
 # COPY .env .
 
+# # Download all the dependencies
+RUN go get -d -v ./...
+
+# # Install the package
+RUN go install -v ./...
+
 RUN go install github.com/cosmtrek/air@latest
 
 CMD ["air"]
-
-# # Download all the dependencies
-# RUN go get -d -v ./...
-
-# # Install the package
-# RUN go install -v ./...
 
 # # Build the Go app
 # RUN go build -o /build

@@ -1,12 +1,6 @@
 package web
 
-var Routes = map[string]string{
-	"main":          "/",
-	"wallets":       "/wallets/",
-	"wallet.create": "/wallets/create/",
-	"wallet.save":   "/wallets/save/",
-	"categories":    "/categories/",
-}
+import "github.com/zualex/gofin/pkg/config"
 
 type SidebarItem struct {
 	Name     string
@@ -20,15 +14,15 @@ func GetCommonVars(title, url string) map[string]interface{} {
 		"title":   title,
 		"sidebar": GetSidebar(url),
 		"url":     url,
-		"routes":  Routes,
+		"routes":  config.Routes,
 	}
 }
 
 func GetSidebar(url string) []SidebarItem {
 	sidebar := []SidebarItem{
-		{"Главная", Routes["main"], "fa-tachometer-alt", false},
-		{"Кошельки", Routes["wallets"], "fa-wallet", false},
-		{"Категории", Routes["categories"], "fa-folder", false},
+		{"Главная", config.Routes["main"], "fa-tachometer-alt", false},
+		{"Кошельки", config.Routes["wallets"], "fa-wallet", false},
+		{"Категории", config.Routes["categories"], "fa-folder", false},
 	}
 
 	for i, v := range sidebar {

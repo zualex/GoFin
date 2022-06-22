@@ -12,6 +12,8 @@ docker compose build
 - https://firehydrant.com/blog/develop-a-go-app-with-docker-compose/
 - https://hoohoo.top/blog/20210530112304-golang-tutorial-introduction-gin-html-template-and-how-integration-with-bootstrap/
 - https://github.com/golang-standards/project-layout
+- https://medium.com/@ekosuprastyo15/gin-gonic-mysql-golang-example-9185f202e968
+- https://www.alexedwards.net/blog/organising-database-access
 
 ## TODO
 <!-- - Docker -->
