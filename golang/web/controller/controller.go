@@ -1,7 +1,9 @@
 package controller
 
-import "database/sql"
+import (
+	"github.com/zualex/gofin/pkg/wallet"
+)
 
 type Controller struct {
-	Database *sql.DB
+	WalletService *wallet.Service
 }

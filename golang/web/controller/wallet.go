@@ -10,11 +10,22 @@ import (
 )
 
 func (controller *Controller) ShowWallet(c *gin.Context) {
-	c.HTML(http.StatusOK, "wallet.tmpl", web.GetCommonVars("Кошельки", c.Request.URL.Path))
+	vars := web.GetCommonVars("Кошельки", c.Request.URL.Path)
+	vars["wallets"] = controller.WalletService.List()
+
+	c.HTML(http.StatusOK, "wallet.tmpl", vars)
 }
 
 func (controller *Controller) CreateWallet(c *gin.Context) {
 	vars := web.GetCommonVars("Создание кошелька", c.Request.URL.Path)
+	vars["currencies"] = config.Currencies
+
+	c.HTML(http.StatusOK, "wallet_create.tmpl", vars)
+}
+
+func (controller *Controller) UpdateWallet(c *gin.Context) {
+	id := c.Param("id")
+	vars := web.GetCommonVars("Изменение кошелька "+id, c.Request.URL.Path)
 	vars["currencies"] = config.Currencies
 
 	c.HTML(http.StatusOK, "wallet_create.tmpl", vars)
@@ -27,12 +38,7 @@ func (controller *Controller) SaveWallet(c *gin.Context) {
 		return
 	}
 
-	// TODO в репозиторий
-	sql := `INSERT INTO "wallets" ("name", "currency") VALUES ($1, $2);`
-	_, err := controller.Database.Exec(sql, wallet.Name, wallet.Currency)
-	if err != nil {
-		panic(err)
-	}
+	controller.WalletService.Save(wallet)
 
-	c.Redirect(http.StatusFound, config.Routes["wallets"])
+	c.Redirect(http.StatusFound, config.Routes["wallets"].GetUrl())
 }
