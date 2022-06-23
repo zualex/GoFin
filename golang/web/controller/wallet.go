@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/zualex/gofin/pkg/config"
@@ -16,29 +17,56 @@ func (controller *Controller) ShowWallet(c *gin.Context) {
 	c.HTML(http.StatusOK, "wallet.tmpl", vars)
 }
 
-func (controller *Controller) CreateWallet(c *gin.Context) {
+func (controller *Controller) ShowCreateWallet(c *gin.Context) {
 	vars := web.GetCommonVars("Создание кошелька", c.Request.URL.Path)
 	vars["currencies"] = config.Currencies
+	vars["model"] = wallet.Wallet{}
 
 	c.HTML(http.StatusOK, "wallet_create.tmpl", vars)
 }
 
-func (controller *Controller) UpdateWallet(c *gin.Context) {
-	id := c.Param("id")
-	vars := web.GetCommonVars("Изменение кошелька "+id, c.Request.URL.Path)
-	vars["currencies"] = config.Currencies
-
-	c.HTML(http.StatusOK, "wallet_create.tmpl", vars)
-}
-
-func (controller *Controller) SaveWallet(c *gin.Context) {
+func (controller *Controller) CreateWallet(c *gin.Context) {
 	var wallet wallet.Wallet
 	if err := c.ShouldBind(&wallet); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	controller.WalletService.Save(wallet)
+	controller.WalletService.Create(wallet)
+
+	c.Redirect(http.StatusFound, config.Routes["wallets"].GetUrl())
+}
+
+func (controller *Controller) ShowUpdateWallet(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	wallet, err := controller.WalletService.FindById(id)
+	if err != nil {
+		controller.NotFoundPage(c)
+	}
+
+	vars := web.GetCommonVars("Изменение кошелька "+wallet.Name, c.Request.URL.Path)
+	vars["currencies"] = config.Currencies
+	vars["model"] = wallet
+
+	c.HTML(http.StatusOK, "wallet_create.tmpl", vars)
+}
+
+func (controller *Controller) UpdateWallet(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	_, err := controller.WalletService.FindById(id)
+	if err != nil {
+		controller.NotFoundPage(c)
+	}
+
+	var wallet wallet.Wallet
+	wallet.Id = id
+
+	if err := c.ShouldBind(&wallet); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	controller.WalletService.Update(wallet)
 
 	c.Redirect(http.StatusFound, config.Routes["wallets"].GetUrl())
 }

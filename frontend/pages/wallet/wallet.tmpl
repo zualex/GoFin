@@ -2,7 +2,7 @@
 <div class="row">
     <div class="col-6">
 
-    <p><a href="{{route "wallet.create"}}" class="btn btn-primary">Добавить</a></p>
+    <p><a href="{{route "wallet.show_create"}}" class="btn btn-primary">Добавить</a></p>
 
 
     <div class="card">
@@ -13,15 +13,13 @@
                 <tr>
                     <th>Name</th>
                     <th>Currency</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 {{ range .wallets }}
                 <tr>
-                    <td><a href="{{route "wallet.update" .Id}}">{{ .Name }}</a></td>
+                    <td><a href="{{route "wallet.show_update" .Id}}">{{ .Name }}</a></td>
                     <td>{{ .Currency }}</td>
-                    <td><a href="#"><i class="nav-icon fas fa-solid fa-trash"></i></a></td>
                 </tr>
                 {{ end }}
             </tbody>

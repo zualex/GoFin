@@ -30,9 +30,27 @@ func (repository *Repository) List() []Wallet {
 	return wallets
 }
 
-func (repository *Repository) Save(wallet Wallet) {
+func (repository *Repository) FindById(id int) (Wallet, error) {
+	var wallet Wallet
+
+	sql := `SELECT id, name, currency FROM "wallets" WHERE id = $1;`
+	row := repository.db.QueryRow(sql, id)
+	err := row.Scan(&wallet.Id, &wallet.Name, &wallet.Currency)
+
+	return wallet, err
+}
+
+func (repository *Repository) Create(wallet Wallet) {
 	sql := `INSERT INTO "wallets" ("name", "currency") VALUES ($1, $2);`
 	_, err := repository.db.Exec(sql, wallet.Name, wallet.Currency)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func (repository *Repository) Update(wallet Wallet) {
+	sql := `UPDATE "wallets" SET "name" = $2, "currency" = $3  WHERE id = $1;`
+	_, err := repository.db.Exec(sql, wallet.Id, wallet.Name, wallet.Currency)
 	if err != nil {
 		log.Fatal(err)
 	}

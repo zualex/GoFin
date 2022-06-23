@@ -17,7 +17,7 @@ func mainPage(c *gin.Context) {
 	c.HTML(http.StatusOK, "main.tmpl", web.GetCommonVars("Главная", c.Request.URL.Path))
 }
 
-func route(pattern string, params ...string) string {
+func route(pattern string, params ...int) string {
 	return config.Routes[pattern].GetUrl(params...)
 }
 
@@ -41,11 +41,13 @@ func main() {
 		WalletService: wallet.NewService(dbConn),
 	}
 
+	router.NoRoute(controller.NotFoundPage)
 	router.GET(config.Routes["main"].GetPattern(), mainPage)
 	router.GET(config.Routes["wallets"].GetPattern(), controller.ShowWallet)
-	router.GET(config.Routes["wallet.create"].GetPattern(), controller.CreateWallet)
-	router.GET(config.Routes["wallet.update"].GetPattern(), controller.UpdateWallet)
-	router.POST(config.Routes["wallet.save"].GetPattern(), controller.SaveWallet)
+	router.GET(config.Routes["wallet.show_create"].GetPattern(), controller.ShowCreateWallet)
+	router.POST(config.Routes["wallet.create"].GetPattern(), controller.CreateWallet)
+	router.GET(config.Routes["wallet.show_update"].GetPattern(), controller.ShowUpdateWallet)
+	router.POST(config.Routes["wallet.update"].GetPattern(), controller.UpdateWallet)
 	router.GET(config.Routes["categories"].GetPattern(), mainPage)
 
 	router.Run(":8080")
