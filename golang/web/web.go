@@ -14,15 +14,14 @@ func GetCommonVars(title, url string) map[string]interface{} {
 		"title":   title,
 		"sidebar": GetSidebar(url),
 		"url":     url,
-		"routes":  config.Routes,
 	}
 }
 
 func GetSidebar(url string) []SidebarItem {
 	sidebar := []SidebarItem{
-		{"Главная", config.Routes["main"], "fa-tachometer-alt", false},
-		{"Кошельки", config.Routes["wallets"], "fa-wallet", false},
-		{"Категории", config.Routes["categories"], "fa-folder", false},
+		{"Главная", config.Routes["main"].GetUrl(), "fa-tachometer-alt", false},
+		{"Кошельки", config.Routes["wallets"].GetUrl(), "fa-wallet", false},
+		{"Категории", config.Routes["categories"].GetUrl(), "fa-folder", false},
 	}
 
 	for i, v := range sidebar {

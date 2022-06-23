@@ -1,14 +1,14 @@
 {{ template "common/header.tmpl" .}}
 <div class="row">
     <div class="col-12">
-        <p><a href="{{index .routes "wallets"}}" class="btn btn-default">Назад</a></p>
+        <p><a href="{{route "wallets"}}" class="btn btn-default">Назад</a></p>
 
         <div class="card card-primary">
             <div class="card-header">
             <h3 class="card-title">{{ .title }}</h3>
             </div>
             
-            <form action="{{index .routes "wallet.save"}}" method="POST">
+            <form action="{{route "wallet.save"}}" method="POST">
                 <div class="card-body">
                     <div class="form-group">
                         <label for="name">Название</label>

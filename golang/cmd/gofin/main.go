@@ -4,7 +4,6 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/zualex/gofin/pkg/config"
@@ -18,8 +17,8 @@ func mainPage(c *gin.Context) {
 	c.HTML(http.StatusOK, "main.tmpl", web.GetCommonVars("Главная", c.Request.URL.Path))
 }
 
-func route(pattern, id string) string {
-	return strings.Replace(config.Routes[pattern].GetPattern(), ":id", id, -1) //TODO сделать более умную подстановку
+func route(pattern string, params ...string) string {
+	return config.Routes[pattern].GetUrl(params...)
 }
 
 func main() {
