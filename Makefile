@@ -58,3 +58,6 @@ migrate-up:
 migrate-down:
 	docker-compose exec -ti app migrate -path=/migrations -database postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=disable down
 	docker-compose exec -ti app migrate -path=/migrations -database postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_TEST_NAME}?sslmode=disable down
+
+test:
+	docker-compose exec -ti app go test ./...
