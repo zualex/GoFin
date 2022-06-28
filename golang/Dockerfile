@@ -21,9 +21,11 @@ RUN go get -d -v ./...
 # # Install the package
 RUN go install -v ./...
 
+RUN go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+
 RUN go install github.com/cosmtrek/air@latest
 
-CMD ["air"]
+CMD ["/app/start.sh"]
 
 # # Build the Go app
 # RUN go build -o /build

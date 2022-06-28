@@ -9,24 +9,29 @@ services:
       - 8080:8080 
     volumes:
       - ./golang:/app
+      - ./postgres/migrations:/migrations
       - ./frontend:/frontend
     env_file: .env
     depends_on:
       - postgres
+      - test_postgres
 
   postgres:
-    image: postgres:latest
+    build: 
+      context: postgres
+      dockerfile: Dockerfile
     environment:
-      - POSTGRES_USER=${DB_USER}  
+      - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_NAME}
-      - DATABASE_HOST=${DB_HOST} 
+      - POSTGRES_MULTIPLE_DATABASES=${DB_NAME},${DB_TEST_NAME}
+      # - POSTGRES_DB=${DB_NAME}
+      - DATABASE_HOST=${DB_HOST}
     ports:
-      - '5432:5432'
+      - '${DB_PORT}:5432'
     volumes:
       - postgres:/var/lib/postgresql/data
       - ./postgres/schema:/docker-entrypoint-initdb.d/schema
-
+  
   frontend:
     build: 
       context: frontend
