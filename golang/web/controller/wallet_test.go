@@ -1,19 +1,11 @@
 package controller
 
-import (
-	"fmt"
-	"testing"
+// func TestShowWallet(t *testing.T) {
+// 	controller := Controller{
+// 		WalletService: wallet.NewService(db),
+// 	}
 
-	"github.com/go-playground/assert/v2"
-	"github.com/zualex/gofin/pkg/wallet"
-)
+// 	fmt.Println(controller)
 
-func TestShowWallet(t *testing.T) {
-	controller := Controller{
-		WalletService: wallet.NewService(db),
-	}
-
-	fmt.Println(controller)
-
-	assert.Equal(t, 1, 1)
-}
+// 	assert.Equal(t, 1, 1)
+// }

@@ -9,7 +9,7 @@ type Route struct {
 	Pattern string
 }
 
-var Routes = map[string]Route{
+var routes = map[string]Route{
 	"main":               {"/"},
 	"wallets":            {"/wallets/"},
 	"wallet.show_create": {"/wallets/create/"},

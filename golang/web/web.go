@@ -1,6 +1,16 @@
 package web
 
-import "github.com/zualex/gofin/pkg/config"
+import (
+	"github.com/zualex/gofin/pkg/config"
+)
+
+type Web struct {
+	Config *config.Config
+}
+
+func New(config *config.Config) *Web {
+	return &Web{config}
+}
 
 type SidebarItem struct {
 	Name     string
@@ -9,19 +19,19 @@ type SidebarItem struct {
 	IsActive bool
 }
 
-func GetCommonVars(title, url string) map[string]interface{} {
+func (web *Web) GetCommonVars(title, url string) map[string]interface{} {
 	return map[string]interface{}{
 		"title":   title,
-		"sidebar": GetSidebar(url),
+		"sidebar": web.GetSidebar(url),
 		"url":     url,
 	}
 }
 
-func GetSidebar(url string) []SidebarItem {
+func (web *Web) GetSidebar(url string) []SidebarItem {
 	sidebar := []SidebarItem{
-		{"Главная", config.Routes["main"].GetUrl(), "fa-tachometer-alt", false},
-		{"Кошельки", config.Routes["wallets"].GetUrl(), "fa-wallet", false},
-		{"Категории", config.Routes["categories"].GetUrl(), "fa-folder", false},
+		{"Главная", web.Config.Routes["main"].GetUrl(), "fa-tachometer-alt", false},
+		{"Кошельки", web.Config.Routes["wallets"].GetUrl(), "fa-wallet", false},
+		{"Категории", web.Config.Routes["categories"].GetUrl(), "fa-folder", false},
 	}
 
 	for i, v := range sidebar {

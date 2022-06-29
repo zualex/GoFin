@@ -3,7 +3,7 @@ package main
 import (
 	"html/template"
 	"log"
-	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/zualex/gofin/pkg/config"
@@ -13,12 +13,10 @@ import (
 	"github.com/zualex/gofin/web/controller"
 )
 
-func mainPage(c *gin.Context) {
-	c.HTML(http.StatusOK, "main.tmpl", web.GetCommonVars("Главная", c.Request.URL.Path))
-}
+var cfg *config.Config
 
 func route(pattern string, params ...int) string {
-	return config.Routes[pattern].GetUrl(params...)
+	return cfg.Routes[pattern].GetUrl(params...)
 }
 
 func main() {
@@ -26,8 +24,10 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	defer dbConn.Close()
+
+	cfg = config.New(os.Getenv("APP_ENV"), dbConn)
+	web := web.New(cfg)
 
 	router := gin.Default()
 	router.SetFuncMap(template.FuncMap{
@@ -38,17 +38,19 @@ func main() {
 	router.LoadHTMLGlob("../frontend/pages/**/*.tmpl")
 
 	controller := controller.Controller{
-		WalletService: wallet.NewService(dbConn),
+		Config:        cfg,
+		Web:           web,
+		WalletService: wallet.NewService(cfg.Db),
 	}
 
 	router.NoRoute(controller.NotFoundPage)
-	router.GET(config.Routes["main"].GetPattern(), mainPage)
-	router.GET(config.Routes["wallets"].GetPattern(), controller.ShowWallet)
-	router.GET(config.Routes["wallet.show_create"].GetPattern(), controller.ShowCreateWallet)
-	router.POST(config.Routes["wallet.create"].GetPattern(), controller.CreateWallet)
-	router.GET(config.Routes["wallet.show_update"].GetPattern(), controller.ShowUpdateWallet)
-	router.POST(config.Routes["wallet.update"].GetPattern(), controller.UpdateWallet)
-	router.GET(config.Routes["categories"].GetPattern(), mainPage)
+	router.GET(cfg.Routes["main"].GetPattern(), controller.ShowMain)
+	router.GET(cfg.Routes["wallets"].GetPattern(), controller.ShowWallet)
+	router.GET(cfg.Routes["wallet.show_create"].GetPattern(), controller.ShowCreateWallet)
+	router.POST(cfg.Routes["wallet.create"].GetPattern(), controller.CreateWallet)
+	router.GET(cfg.Routes["wallet.show_update"].GetPattern(), controller.ShowUpdateWallet)
+	router.POST(cfg.Routes["wallet.update"].GetPattern(), controller.UpdateWallet)
+	router.GET(cfg.Routes["categories"].GetPattern(), controller.ShowMain)
 
 	router.Run(":8080")
 }
