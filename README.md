@@ -24,6 +24,7 @@ docker compose build
 <!-- - Тестовая БД postgres -->
 <!-- - Миграции на Go -->
 - Сделать тесты с БД: https://markphelps.me/posts/writing-tests-for-your-database-code-in-go/
+https://circleci.com/blog/gin-gonic-testing/
 https://www.yellowduck.be/posts/using-environment-variables-in-go-tests/
 http://www.inanzzz.com/index.php/post/02y4/using-a-database-instance-and-truncating-tables-in-golang-unit-tests
 - https://github.com/golang-migrate/migrate/issues/511

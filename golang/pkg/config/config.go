@@ -11,6 +11,8 @@ type Config struct {
 	Currencies []string
 }
 
+const EnvTest = "test"
+
 func New(env string, dbConn *sql.DB) *Config {
 	return &Config{env, dbConn, routes, currencies}
 }
