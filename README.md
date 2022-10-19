@@ -1,36 +1,29 @@
 # Golang finance (GoFin)
 
 ## Docker
-docker compose build
+```
+make build
+make up
+```
 
-- http://localhost:3000/
-- http://localhost:8080/
+Link: http://localhost:8080/
+Static frontend: http://localhost:3000/
 
-## Links
-- https://stackoverflow.com/questions/46184173/err-empty-response-from-docker-container
-- https://betterprogramming.pub/how-does-docker-port-binding-work-b089f23ca4c8
-- https://firehydrant.com/blog/develop-a-go-app-with-docker-compose/
-- https://hoohoo.top/blog/20210530112304-golang-tutorial-introduction-gin-html-template-and-how-integration-with-bootstrap/
-- https://github.com/golang-standards/project-layout
-- https://medium.com/@ekosuprastyo15/gin-gonic-mysql-golang-example-9185f202e968
-- https://www.alexedwards.net/blog/organising-database-access
-- https://markphelps.me/posts/writing-tests-for-your-database-code-in-go/
-- https://developpaper.com/docker-is-a-solution-to-create-multiple-databases-when-starting-postgresql/
-- https://circleci.com/blog/gin-gonic-testing/
-- http://www.inanzzz.com/index.php/post/02y4/using-a-database-instance-and-truncating-tables-in-golang-unit-tests
+## Task tracker
+https://trello.com/b/J1xAnypP/project-gofin
 
-## TODO
-<!-- - Docker -->
-<!-- - Postgresql -->
-<!-- - Найти шаблон на bootsrap -->
-<!-- - Тестовая БД postgres -->
-<!-- - Миграции на Go -->
-- Прикрутить фикстуры
-- Сделать тесты с БД
-- Скомоновать шаблоны так, чтобы в main.tmpl был только header, content и footer
-- Реализовать CRUD для категорий
-- Разобраться с правильной иерархией папок
-- Выключить frontend localhost:3000
-- Почитать документацию к "net/http" и посмотреть на аналоги
-- Почитать документацию к "html/template" и посмотреть на аналоги
-- Почитать документацию к "github.com/gin-gonic/gin" и посмотреть на аналоги
+## Troubleshoot
+
+### Postgres doesn't create database
+```
+make down
+docker volume rm gofin_postgres
+make up
+docker logs -f gofin-postgres-1
+```
+
+### Container app doesn't up
+1) Check files end (need LF):
+- /golang/start.sh
+- /golang/wait-for-it.sh
+- /postgres/docker-postgresql-multiple-databases/create-multiple-postgresql-databases.sh
