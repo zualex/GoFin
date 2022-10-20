@@ -9,12 +9,15 @@ import (
 
 	"github.com/go-playground/assert/v2"
 	"github.com/zualex/gofin/internal/router"
+	"github.com/zualex/gofin/pkg/wallet"
 )
 
 // TODO добавить фикстуры
 
 func TestShowWallet(t *testing.T) {
-	mockResponse := `{"message":"Welcome to the Tech Company listing API with Golang"}`
+	testWallet := wallet.Wallet{Name: "test1", Currency: Ctrl.Config.Currencies[0]}
+	Ctrl.WalletService.Create(testWallet)
+	mockResponse := []wallet.Wallet{testWallet}
 
 	r := router.GetRouter(Ctrl.Config)
 	r.GET("/wallets/", Ctrl.ShowWallet)
@@ -26,10 +29,14 @@ func TestShowWallet(t *testing.T) {
 	responseData, _ := ioutil.ReadAll(w.Body)
 	var data map[string]interface{}
 	err := json.Unmarshal(responseData, &data)
+
 	if err != nil {
 		panic(err)
 	}
 
-	assert.Equal(t, mockResponse, data["wallets"])
+	responseWallets := data["wallets"].([]interface{})
+
+	assert.Equal(t, mockResponse[0].Name, responseWallets[0].(map[string]interface{})["Name"])
+	assert.Equal(t, mockResponse[0].Currency, responseWallets[0].(map[string]interface{})["Currency"])
 	assert.Equal(t, http.StatusOK, w.Code)
 }

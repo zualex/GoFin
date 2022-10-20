@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -10,9 +9,6 @@ import (
 )
 
 func (ctrl *Controller) ShowWallet(c *gin.Context) {
-	fmt.Println("!!!")
-	fmt.Println(c.ContentType())
-
 	vars := ctrl.Web.GetCommonVars("Кошельки", c.Request.URL.Path)
 	vars["wallets"] = ctrl.WalletService.List()
 
