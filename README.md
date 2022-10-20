@@ -1,8 +1,14 @@
 # Golang finance (GoFin)
 
 ## Docker
+
+### Install
 ```
 make build
+```
+
+### Run
+```
 make up
 ```
 
