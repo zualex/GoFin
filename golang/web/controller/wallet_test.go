@@ -9,15 +9,11 @@ import (
 
 	"github.com/go-playground/assert/v2"
 	"github.com/zualex/gofin/internal/router"
-	"github.com/zualex/gofin/pkg/wallet"
+	"github.com/zualex/gofin/test/factories/walletfactory"
 )
 
-// TODO добавить фикстуры
-
 func TestShowWallet(t *testing.T) {
-	testWallet := wallet.Wallet{Name: "test1", Currency: Ctrl.Config.Currencies[0]}
-	Ctrl.WalletService.Create(testWallet)
-	mockResponse := []wallet.Wallet{testWallet}
+	mockResponse := walletfactory.NewFactory(Ctrl.Config, Ctrl.WalletService).Create(3)
 
 	r := router.GetRouter(Ctrl.Config)
 	r.GET("/wallets/", Ctrl.ShowWallet)
@@ -36,7 +32,12 @@ func TestShowWallet(t *testing.T) {
 
 	responseWallets := data["wallets"].([]interface{})
 
-	assert.Equal(t, mockResponse[0].Name, responseWallets[0].(map[string]interface{})["Name"])
-	assert.Equal(t, mockResponse[0].Currency, responseWallets[0].(map[string]interface{})["Currency"])
 	assert.Equal(t, http.StatusOK, w.Code)
+	assert.Equal(t, len(mockResponse), len(responseWallets))
+	i := 0
+	for i < len(mockResponse) {
+		assert.Equal(t, mockResponse[i].Name, responseWallets[i].(map[string]interface{})["Name"])
+		assert.Equal(t, mockResponse[i].Currency, responseWallets[i].(map[string]interface{})["Currency"])
+		i += 1
+	}
 }
